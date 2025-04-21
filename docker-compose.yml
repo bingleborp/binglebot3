@@ -1,7 +1,7 @@
 version: "3.8"
 services:
 
-  postgres:
+  postgres_bingle:
     image: postgres:13
     container_name: postgres_db
     environment:
@@ -11,16 +11,16 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_bingle:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
       interval: 5s
       timeout: 5s
       retries: 5
     networks:
-      - app_network
+      - bingle_network
 
-  telegram_bot:
+  bingle_bot:
     container_name: binglebot3
     image: binglebot3:latest
     restart: unless-stopped
@@ -30,12 +30,12 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - app_network
+      - bingle_network
 
 
 networks:
-  app_network:
+  bingle_network:
     driver: bridge
 
 volumes:
-  postgres_data:
+  postgres_data_bingle:

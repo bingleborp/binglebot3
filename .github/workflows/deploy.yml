@@ -33,12 +33,12 @@ jobs:
           docker save -o binglebot3.tar binglebot3:latest binglebot3:$GITHUB_RUN_ID
           
           # Создаём архив с всеми компонентами
-          tar -czvf deploy.tar.gz \
+          tar -czvf deploy3.tar.gz \
             binglebot3.tar \
             .env \
             docker-compose.yml
           
-          chmod 664 deploy.tar.gz
+          chmod 664 deploy3.tar.gz
 
       - name: Upload bundle to server
         uses: appleboy/scp-action@v0.1.7
@@ -46,8 +46,8 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: "deploy.tar.gz"
-          target: "/opt/app/"
+          source: "deploy3.tar.gz"
+          target: "/opt/bingle_app/"
 
       - name: Deploy on server
         uses: appleboy/ssh-action@v1.2.2
@@ -56,16 +56,16 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /opt/app
-            docker compose down --rmi all
+            cd /opt/bingle_app
+            docker compose --project-name binglebot3 down --rmi all
             
             # Распаковываем архив
-            tar -xzvf deploy.tar.gz
+            tar -xzvf deploy3.tar.gz
             
             # Загружаем образ и запускаем
             docker load -i binglebot3.tar
-            docker compose up -d --force-recreate --no-build
+            docker compose --project-name binglebot3 up -d --force-recreate --no-build
             
             # Очистка
-            rm -f deploy.tar.gz binglebot3.tar
+            rm -f deploy3.tar.gz binglebot3.tar
             docker image prune -af
