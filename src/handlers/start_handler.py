@@ -1,4 +1,4 @@
-from ..core.bot_instance import bot
+from src.core.bot_instance import bot
 
 def register_handlers():
     @bot.message_handler(commands=["start"])
