@@ -57,14 +57,14 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd /opt/bingle_app
-            docker compose --project-name binglebot3 down --rmi all
+            docker compose -p binglebot3 down --rmi all
             
             # Распаковываем архив
             tar -xzvf deploy3.tar.gz
             
             # Загружаем образ и запускаем
             docker load -i binglebot3.tar
-            docker compose --project-name binglebot3 up -d --force-recreate --no-build
+            docker compose -p binglebot3 up -d --force-recreate --no-build
             
             # Очистка
             rm -f deploy3.tar.gz binglebot3.tar
