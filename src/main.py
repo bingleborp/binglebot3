@@ -8,7 +8,7 @@ bot = telebot.TeleBot(botToken)
 dbUser = os.getenv("DB_USER")
 dbPass = os.getenv("DB_PASS")
 dbName = os.getenv("DB_NAME")
-adminId = os.getemv("TG_BOT_ADMIN_IDS")
+adminId = os.getenv("TG_BOT_ADMIN_IDS")
 DATABASE_URL = "postgres://" + dbUser + ":"+ dbPass +"@bingle_db:5432/" + dbName
 
 def connect_to_db():
