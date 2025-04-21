@@ -1,5 +1,5 @@
 import os
-from ..core.sql import operation
+from src.core.sql import operation
 
 admin_id = os.getenv("TG_BOT_ADMIN_IDS")
 

@@ -1,6 +1,6 @@
-from ..core.bot_instance import bot
-from ..core.sql import operation
-from ..core.get_access import is_admin
+from src.core.bot_instance import bot
+from src.core.sql import operation
+from src.core.get_access import is_admin
 
 def register_handlers():
     # Обработчик команды /sql

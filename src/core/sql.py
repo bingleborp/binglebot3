@@ -1,4 +1,4 @@
-from .database_connection import connect_to_db
+from src.core.database_connection import connect_to_db
 
 def do(query: str) -> str:
     try:
