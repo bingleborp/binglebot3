@@ -1,0 +1,22 @@
+{
+  "name": "binglebot3",
+  "description": "Karaoke Queue Bot based on UnAfraid example",
+  "repository": "https://github.com/bingleborp/binglebot3",
+  "logo": "",
+  "keywords": [
+    "python",
+    "telegram-bot"
+  ],
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "env": {
+    "TG_BOT_TOKEN": {
+      "description": "The token from BotFather",
+      "value": ""
+    }
+  }
+}

@@ -1,0 +1,38 @@
+name: Build, Export and Deploy
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t karaokebot:latest -t karaokebot:$GITHUB_RUN_ID --no-cache --pull .
+
+      - name: Prepare deployment files
+        run: |
+          # Создаём .env
+          cat << EOF > .env
+          TG_BOT_TOKEN=${{ secrets.TG_BOT_TOKEN }}
+          EOF
+          
+          # Сохраняем образ
+          docker save -o karaokebot.tar karaokebot:latest karaokebot:$GITHUB_RUN_ID
+          
+          # Создаём архив с всеми компонентами
+          tar -czvf deploy.tar.gz \
+            karaokebot.tar \
+            .env \
+            docker-compose.yml
+          
+          chmod 664 deploy.tar.gz
