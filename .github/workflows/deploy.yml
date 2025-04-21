@@ -30,7 +30,7 @@ jobs:
           EOF
           
           # Сохраняем образ
-          docker save -o binglebot3.tar binglebot3:latest binglebot:$GITHUB_RUN_ID
+          docker save -o binglebot3.tar binglebot3:latest binglebot3:$GITHUB_RUN_ID
           
           # Создаём архив с всеми компонентами
           tar -czvf deploy.tar.gz \
