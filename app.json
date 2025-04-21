@@ -1,6 +1,6 @@
 {
   "name": "binglebot3",
-  "description": "Karaoke Queue Bot based on UnAfraid example",
+  "description": "binglebot ported to python",
   "repository": "https://github.com/bingleborp/binglebot3",
   "logo": "",
   "keywords": [

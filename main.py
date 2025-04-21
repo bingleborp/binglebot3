@@ -1,7 +1,9 @@
 import telebot
+import os
 
 # Создаем экземпляр бота
-bot = telebot.TeleBot('Telegram TOKEN')
+botToken = os.getEnv("TG_BOT_TOKEN")
+bot = telebot.TeleBot(botToken)
 # Функция, обрабатывающая команду /start
 @bot.message_handler(commands=["start"])
 def start(m, res=False):

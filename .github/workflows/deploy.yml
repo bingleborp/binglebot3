@@ -2,7 +2,7 @@ name: Build, Export and Deploy
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build-and-deploy:
@@ -17,22 +17,55 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t karaokebot:latest -t karaokebot:$GITHUB_RUN_ID --no-cache --pull .
+          docker build -t binglebot3:latest -t binglebot3:$GITHUB_RUN_ID --no-cache --pull .
 
       - name: Prepare deployment files
         run: |
           # Создаём .env
           cat << EOF > .env
           TG_BOT_TOKEN=${{ secrets.TG_BOT_TOKEN }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_NAME=${{ secrets.DB_NAME }}
           EOF
           
           # Сохраняем образ
-          docker save -o karaokebot.tar karaokebot:latest karaokebot:$GITHUB_RUN_ID
+          docker save -o binglebot3.tar binglebot3:latest binglebot:$GITHUB_RUN_ID
           
           # Создаём архив с всеми компонентами
           tar -czvf deploy.tar.gz \
-            karaokebot.tar \
+            binglebot3.tar \
             .env \
             docker-compose.yml
           
           chmod 664 deploy.tar.gz
+
+      - name: Upload bundle to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          source: "deploy.tar.gz"
+          target: "/opt/app/"
+
+      - name: Deploy on server
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            cd /opt/app
+            docker compose down --rmi all
+            
+            # Распаковываем архив
+            tar -xzvf deploy.tar.gz
+            
+            # Загружаем образ и запускаем
+            docker load -i binglebot3.tar
+            docker compose up -d --force-recreate --no-build
+            
+            # Очистка
+            rm -f deploy.tar.gz binglebot3.tar
+            docker image prune -af
