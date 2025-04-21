@@ -8,14 +8,14 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     volumes:
-      - postgres_data_bingle:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
       interval: 5s
       timeout: 5s
       retries: 5
     networks:
-      - bingle_network
+      - app_network
 
   bingle_bot:
     container_name: binglebot3
@@ -27,12 +27,12 @@ services:
       postgres_bingle:
         condition: service_healthy
     networks:
-      - bingle_network
+      - app_network
 
 
 networks:
-  bingle_network:
+  app_network:
     driver: bridge
 
 volumes:
-  postgres_data_bingle:
+  postgres_data:
