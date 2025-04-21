@@ -23,6 +23,10 @@ services:
     restart: unless-stopped
     environment:
       TG_BOT_TOKEN: ${TG_BOT_TOKEN}
+      TG_BOT_ADMIN_IDS: ${TG_BOT_ADMIN_IDS}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     depends_on:
       postgres_bingle:
         condition: service_healthy
