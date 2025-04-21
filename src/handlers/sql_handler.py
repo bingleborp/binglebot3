@@ -1,5 +1,5 @@
 from ..core.bot_instance import bot
-from ..core.sql import do
+from ..helpers.debug import do
 from ..core.get_access import is_admin
 
 def register_handlers():
