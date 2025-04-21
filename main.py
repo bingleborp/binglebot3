@@ -2,7 +2,7 @@ import telebot
 import os
 
 # Создаем экземпляр бота
-botToken = os.getEnv("TG_BOT_TOKEN")
+botToken = os.getenv("TG_BOT_TOKEN")
 bot = telebot.TeleBot(botToken)
 # Функция, обрабатывающая команду /start
 @bot.message_handler(commands=["start"])
