@@ -7,4 +7,4 @@ COPY . /usr/src/${PROJECT_NAME}
 
 RUN pip install pyTelegramBotAPI && pip install psycopg2
 
-CMD ["python", "/src/module/main.py"]
+CMD ["python", "src/main.py"]
