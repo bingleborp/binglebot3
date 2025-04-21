@@ -1,6 +1,6 @@
-from src.core.bot_instance import bot
-from src.core.database_connection import connect_to_db
-from src.helpers.is_admin_helper import is_admin
+from ..core.bot_instance import bot
+from ..core.database_connection import connect_to_db
+from ..helpers.is_admin_helper import is_admin
 
 def register_handlers():
     @bot.message_handler(content_types=["text"])
