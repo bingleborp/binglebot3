@@ -6,7 +6,7 @@ import psycopg2
 botToken = os.getenv("TG_BOT_TOKEN")
 bot = telebot.TeleBot(botToken)
 dbUser = os.getenv("DB_USER")
-dbPass = os.getenv("DB_PASS")
+dbPass = os.getenv("DB_PASSWORD")
 dbName = os.getenv("DB_NAME")
 adminId = os.getenv("TG_BOT_ADMIN_IDS")
 DATABASE_URL = "postgres://" + dbUser + ":"+ dbPass +"@bingle_db:5432/" + dbName
