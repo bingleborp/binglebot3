@@ -27,7 +27,7 @@ services:
     environment:
       TG_BOT_TOKEN: ${TG_BOT_TOKEN}
     depends_on:
-      postgres:
+      postgres_bingle:
         condition: service_healthy
     networks:
       - bingle_network
