@@ -23,16 +23,33 @@ def start(m, res=False):
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     if message.chat.id == adminId:
-        conn = connect_to_db()
-        cursor = conn.cursor()
-        query = message.text
-        cursor.execute(query)
-        conn.commit()
-        cursor.close()
-        response =
-        bot.send_message(message.chat.id, 'Вот ответ базы: ', response)
+        try:
+            conn = connect_to_db()
+            cursor = conn.cursor()
+            query = message.text
+            cursor.execute(query)
+
+            if cursor.description:
+                # Если это SELECT-запрос, получаем результаты
+                result = cursor.fetchall()
+                response = "Результат:\n" + "\n".join([str(row) for row in result])
+            else:
+                # Если это UPDATE/INSERT/DELETE и т.д., коммитим изменения
+                conn.commit()
+                response = f"Успешно. Затронуто строк: {cursor.rowcount}"
+
+            # Закрываем соединение
+            cursor.close()
+            conn.close()
+
+        except Exception as e:
+            response = f"Ошибка: {str(e)}"
+
+        # Отправляем результат
+        bot.send_message(message.chat.id, response)
+
     else:
-        bot.send_message(message.chat.id, 'Пашол нафик')
+        bot.send_message(message.chat.id, 'Доступ запрещён')
 
 # Запускаем бота
 bot.polling(none_stop=True, interval=0)
