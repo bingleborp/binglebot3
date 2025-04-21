@@ -5,6 +5,6 @@ WORKDIR /usr/src/${PROJECT_NAME}
 
 COPY . /usr/src/${PROJECT_NAME}
 
-RUN pip install pyTelegramBotAPI && pip install psycopg2
+RUN pip install -r requirements.txt
 
 CMD ["python", "-m", "src.main"]
